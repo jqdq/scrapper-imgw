@@ -233,49 +233,6 @@ prosta. Oprogramowanie łączy ze sobą kolejne ramki danych:
         }
     }
 
-    df
-
-    ##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          V1
-    ## 1                                                                                                                                                                                                                               Zjawisko/Stopień zagrożenia Silny mróz/1 Obszar (w nawiasie numer powiaty: tatrzański(7) Ważność od godz. 21:00 dnia 11.01.2022 do godz. 08:00 dnia 12.01.2022 Prawdopodobieństwo 75% Przebieg Prognozuje się temperaturę minimalną w nocy miejscami od -16°C do -12°C. Wiatr o średniej prędkości od 5 km/h do 15 km/h. SMS IMGW-PIB OSTRZEGA: MRÓZ/1 małopolskie (1 powiat) od 21:00/11.01 do 08:00/12.01.2022 temp. min -16st, wiatr 15 km/h. Dotyczy powiatów: tatrzański. RSO Woj. małopolskie (1 powiat), IMGW-PIB wydał ostrzeżenie pierwszego stopnia o silnych mrozach Uwagi Brak.
-    ## 2 Zjawisko/Stopień zagrożenia Silny mróz/1 Obszar (w nawiasie numer powiaty: augustowski(4), białostocki(3), Białystok(3), bielski(3), hajnowski(3), sejneński(4), siemiatycki(3), sokólski(3), suwalski(4), Suwałki(4) Ważność od godz. 23:00 dnia 11.01.2022 do godz. 08:00 dnia 12.01.2022 Prawdopodobieństwo 70% Przebieg Prognozuje się temperaturę minimalną miejscami od -15°C do -13°C. Wiatr o średniej prędkości od 5 km/h do 10 km/h. SMS IMGW-PIB OSTRZEGA: MRÓZ/1 podlaskie (10 powiatów) od 23:00/11.01 do 08:00/12.01.2022 temp. min -15 st, wiatr 5-10 km/h. Dotyczy powiatów: augustowski, białostocki, Białystok, bielski, hajnowski, sejneński, siemiatycki, sokólski, suwalski i Suwałki. RSO Woj. podlaskie (10 powiatów), IMGW-PIB wydał ostrzeżenie pierwszego stopnia o silnych mrozach Uwagi Brak.
-    ## 3                                                                                                                                                                                                     Zjawisko/Stopień zagrożenia Silny mróz/1 Obszar (w nawiasie numer powiaty: bieszczadzki(7), leski(7) Ważność od godz. 21:00 dnia 11.01.2022 do godz. 08:00 dnia 12.01.2022 Prawdopodobieństwo 75% Przebieg Prognozuje się temperaturę minimalną w nocy miejscami od -16°C do -12°C. Wiatr o średniej prędkości od 5 km/h do 15 km/h. SMS IMGW-PIB OSTRZEGA: MRÓZ/1 podkarpackie (2 powiaty) od 21:00/11.01 do 08:00/12.01.2022 temp. min -16st, wiatr 15 km/h. Dotyczy powiatów: bieszczadzki i leski. RSO Woj. podkarpackie (2 powiaty), IMGW-PIB wydał ostrzeżenie pierwszego stopnia o silnych mrozach Uwagi Brak.
-    ##        event lvl messtype
-    ## 1 Silny mróz   1        0
-    ## 2 Silny mróz   1        0
-    ## 3 Silny mróz   1        0
-    ##                                                                                                                                      regions
-    ## 1                                                                                                                              tatrzański(7)
-    ## 2 augustowski(4), białostocki(3), Białystok(3), bielski(3), hajnowski(3), sejneński(4), siemiatycki(3), sokólski(3), suwalski(4), Suwałki(4)
-    ## 3                                                                                                                  bieszczadzki(7), leski(7)
-    ##   starthour   startday endhour     endday prob
-    ## 1     21:00 11.01.2022   08:00 12.01.2022  75%
-    ## 2     23:00 11.01.2022   08:00 12.01.2022  70%
-    ## 3     21:00 11.01.2022   08:00 12.01.2022  75%
-    ##                                                                                                                         how
-    ## 1 Prognozuje się temperaturę minimalną w nocy miejscami od -16°C do -12°C. Wiatr o średniej prędkości od 5 km/h do 15 km/h.
-    ## 2        Prognozuje się temperaturę minimalną miejscami od -15°C do -13°C. Wiatr o średniej prędkości od 5 km/h do 10 km/h.
-    ## 3 Prognozuje się temperaturę minimalną w nocy miejscami od -16°C do -12°C. Wiatr o średniej prędkości od 5 km/h do 15 km/h.
-    ##   hour  day cancelcause
-    ## 1 <NA> <NA>        <NA>
-    ## 2 <NA> <NA>        <NA>
-    ## 3 <NA> <NA>        <NA>
-    ##                                                                                                                                                                                                                                                        sms
-    ## 1                                                                                                        IMGW-PIB OSTRZEGA: MRÓZ/1 małopolskie (1 powiat) od 21:00/11.01 do 08:00/12.01.2022 temp. min -16st, wiatr 15 km/h. Dotyczy powiatów: tatrzański.
-    ## 2 IMGW-PIB OSTRZEGA: MRÓZ/1 podlaskie (10 powiatów) od 23:00/11.01 do 08:00/12.01.2022 temp. min -15 st, wiatr 5-10 km/h. Dotyczy powiatów: augustowski, białostocki, Białystok, bielski, hajnowski, sejneński, siemiatycki, sokólski, suwalski i Suwałki.
-    ## 3                                                                                            IMGW-PIB OSTRZEGA: MRÓZ/1 podkarpackie (2 powiaty) od 21:00/11.01 do 08:00/12.01.2022 temp. min -16st, wiatr 15 km/h. Dotyczy powiatów: bieszczadzki i leski.
-    ##                                                                                              rso
-    ## 1   Woj. małopolskie (1 powiat), IMGW-PIB wydał ostrzeżenie pierwszego stopnia o silnych mrozach
-    ## 2  Woj. podlaskie (10 powiatów), IMGW-PIB wydał ostrzeżenie pierwszego stopnia o silnych mrozach
-    ## 3 Woj. podkarpackie (2 powiaty), IMGW-PIB wydał ostrzeżenie pierwszego stopnia o silnych mrozach
-    ##   remarks  voivodeship warn_id           author infile
-    ## 1   Brak.  małopolskie       9  Krzysztof Jania      1
-    ## 2   Brak.    podlaskie       5 Magdalena Pękala      1
-    ## 3   Brak. podkarpackie       8  Krzysztof Jania      1
-    ##                                 file
-    ## 1 tmp/MAW_STAN_20220111105058212.pdf
-    ## 2 tmp/PDW_STAN_20220111103130250.pdf
-    ## 3 tmp/PKW_STAN_20220111105058212.pdf
-
 ### Obróbka danych
 
 W tym momencie może zostać włączone filtrowanie tylko nowych ostrzeżeń.
@@ -374,8 +331,6 @@ danego miejsca. Taki wynik jest zwracany użytkownikowi w formacie JSON.
 </tr>
 </tbody>
 </table>
-
-Przykładowy wynik działania algorytmu
 
 Oczywiście, jeśli żadne ostrzeżenia nie zostaną znalezione, API zwróci
 pusty wektor, który w JSONie jest reprezentowany jako `[]`. Ten warunek
