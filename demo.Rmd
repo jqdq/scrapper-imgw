@@ -1,0 +1,152 @@
+---
+title: "Demo technologiczne"
+author: "Jakub Dakowski"
+date: "28 11 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xml2)
+library(dplyr)
+library(pdftools)
+library(stringr)
+
+unlink("tmp", recursive = TRUE)
+dir.create("tmp")
+
+preprocess <- function(txt) {
+  txt <- gsub("\n+| {2,}\t+", " ", txt)
+  txt <- gsub("strona \\d+ z \\d+", "", txt, ignore.case=T)
+  txt <- gsub(" Instytut Meteorologii i Gospodarki Wodnej .+  www: www\\.imgw\\.pl", "", txt, ignore.case=T)
+  txt <- gsub("Zjawisko/Stopień", "\nZjawisko/Stopień", gsub("ostrzeżenia dla powiatu\\) ", "", txt))
+  txt <- paste(txt, collapse=" ")
+  txt <- gsub(" {2,}", " ", txt)
+  
+  return (txt)
+}
+```
+
+## Lista plików 
+
+```{r}
+webpage_url <- "https://danepubliczne.imgw.pl/data/current/ost_meteo/"
+webpage <- xml2::read_html(webpage_url)
+
+ost_files <- rvest::html_table(webpage)[[1]] %>% 
+  tibble::as_tibble(.name_repair = "unique") %>%
+  filter(Name != "" & Name != "Parent Directory") %>%
+  select(Name, `Last modified`)
+ost_files
+
+```
+## Wydobywanie danych
+
+```{r}
+extract <- function(txt) {
+  START_PATTERN <- paste(
+    "Zasięg ostrzeżeń w województwie WOJEWÓDZTWO (?<voivodeship>[\\w\\-]+)",
+    "OSTRZEŻENIA METEOROLOGICZNE ZBIORCZO NR (?<id>\\d+) WYKAZ OBOWIĄZUJĄCYCH OSTRZEŻEŃ",
+    "o godz\\. \\d\\d:\\d\\d dnia \\d\\d\\.\\d\\d\\.\\d{4}",
+    "(?<text>(?:\\n|.)+)",
+    "Dyżurny synoptyk (?<creator>.+?(?= IMGW-PIB))",
+    sep=" "
+  )
+  PATTERN <- paste(
+    "Zjawisko/Stopień zagrożenia (?<event>[\\w ]+)/(?<lvl>\\d+)(?<messtype>| \\w+)",
+    "Obszar \\(w nawiasie numer powiaty: (?<regions>(?:[\\w- ]+\\(\\d+\\)(?:, )*)+)",
+    "(?:Ważność od godz\\. (?<starthour>\\d\\d\\:\\d\\d)",
+    "dnia (?<startday>\\d\\d\\.\\d\\d\\.\\d{4})",
+    "do godz\\. (?<endhour>\\d\\d\\:\\d\\d)",
+    "dnia (?<endday>\\d\\d\\.\\d\\d\\.\\d{4})",
+    "Prawdopodobieństwo (?<prob>\\d{1,3}\\%)",
+    "Przebieg (?<how>.+?(?= SMS))|Czas",
+    "odwołania godz\\. (?<hour>\\d\\d:\\d\\d) dnia (?<day>\\d\\d\\.\\d\\d\\.\\d{4})",
+    "Przyczyna (?<cause>.+?(?= SMS)))",
+    "SMS (?<sms>.+?(?= RSO))",
+    "RSO (?<rso>.+?(?= Uwagi))",
+    "Uwagi (?<remarks>[^\\n]+)",
+    sep=" "
+  )
+  pat <- str_match(txt, START_PATTERN)
+  df <- as.data.frame(str_match_all(pat[4], PATTERN))
+  df$voivodeship <- str_to_lower(pat[2], locale = 'pl')
+  df$warn_id <- pat[3]
+  df$author <- pat[5]
+  df$infile <- rownames(df)
+  return (df)
+}
+
+get_warns <- function(file) {
+  time <- Sys.time()
+  saved.file <- paste('tmp', file, sep="/")
+  if (!file.exists(saved.file)) {
+   download.file(paste(webpage_url, file, sep=""), saved.file, mode="wb")
+  }
+  
+  txt <- preprocess(pdf_text(saved.file))
+  extracted <- extract(txt)
+  extracted$file <- file
+  extracted['downloaded'] <- time
+  extracted$messtype[extracted['messtype']==" ZMIANA"] <- "C"
+  extracted$messtype[extracted['messtype']==" WYCOFANIE"] <- "O"
+  extracted$messtype[extracted['messtype']==""] <- "A"
+  return (extracted)
+}
+
+```
+
+```r
+  START_PATTERN <- paste(
+    "Zasięg ostrzeżeń w województwie WOJEWÓDZTWO (?<voivodeship>[\\w\\-]+)",
+    "OSTRZEŻENIA METEOROLOGICZNE ZBIORCZO NR (?<id>\\d+) WYKAZ OBOWIĄZUJĄCYCH OSTRZEŻEŃ",
+    "o godz\\. \\d\\d:\\d\\d dnia \\d\\d\\.\\d\\d\\.\\d{4}",
+    "(?<text>(?:\n|.)+)",
+    "Dyżurny synoptyk (?<creator>.+?(?= IMGW-PIB))",
+    sep=" "
+  )
+  PATTERN <- paste(
+    "Zjawisko/Stopień zagrożenia (?<event>[\\w ]+)/(?<lvl>\\d+)(?<messtype>| \\w+)",
+    "Obszar \\(w nawiasie numer powiaty: (?<regions>(?:[\\w- ]+\\(\\d+\\)(?:, )*)+)",
+    "(?:Ważność od godz\\. (?<starthour>\\d\\d\\:\\d\\d)",
+    "dnia (?<startday>\\d\\d\\.\\d\\d\\.\\d{4})",
+    "do godz\\. (?<endhour>\\d\\d\\:\\d\\d)",
+    "dnia (?<endday>\\d\\d\\.\\d\\d\\.\\d{4})",
+    "Prawdopodobieństwo (?<prob>\\d{1,3}\\%)",
+    "Przebieg (?<how>.+?(?= SMS))|Czas",
+    "odwołania godz\\. (?<hour>\\d\\d:\\d\\d) dnia (?<day>\\d\\d\\.\\d\\d\\.\\d{4})",
+    "Przyczyna (?<cause>.+?(?= SMS)))",
+    "SMS (?<sms>.+?(?= RSO))",
+    "RSO (?<rso>.+?(?= Uwagi))",
+    "Uwagi (?<remarks>[^\n]+)",
+    sep=" "
+  )
+  
+saved.file <- paste('tmp', ost_files$Name[4], sep="/")
+if (!file.exists(saved.file)) {
+  download.file(paste(webpage_url, file, sep=""), saved.file, mode="wb")
+}
+
+txt <- preprocess(pdf_text(saved.file))
+pat <- str_match(txt, START_PATTERN)
+str_match_all(pat[4], PATTERN)
+as.data.frame(str_match_all(pat[4], PATTERN))
+```
+
+```{r}
+file <- ost_files$Name[1]
+extracted <- get_warns(file)
+for (file in ost_files$Name[2:length(ost_files$Name)]) {
+ extracted <- rbind(extracted, get_warns(file))
+}
+```
+
+```{r}
+format_time <- function(date, time) {
+  t <- strptime(paste(date, time), "%d.%m.%Y %H:%M")
+  t[is.na(t)]<-NULL
+  return (t)
+}
+
+format_time(list('12.04.2022','13.04.2022',NULL), list('16:00',NULL, '18:00'))
+```
