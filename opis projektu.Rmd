@@ -3,9 +3,10 @@ title: "Scrapper ostrzeżeń pogodowych IMGW"
 author: "Jakub Dakowski"
 date: "11.01.2021"
 output:
+  md_document: default
+  html_document: default
   pdf_document: 
     df_print: paged
-  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -311,15 +312,17 @@ We wszystkich komunikatach, które autor napotkał algorytm zadziałał poprawni
 
 ## Informacja o użytych pakietach
 
-| Nazwa paczki | Opis                                      | Miesięczne pobrania | Autorzy        | Data opublikowania |
-|-------------:|-------------------------------------------|---------------------|----------------|--------------------|
-|       `xml2` | Pobieranie dokumentów HTML                | 620 159             | Hadley Wickham | 30.11.2021         |
-|  `tidyverse` | Zestaw bibliotek wspomagających pracę w R | 689 554             | Hadley Wickham | 15.04.2021         |
-|   `pdftools` | Scrapowanie tekstu z plików PDF           | brak danych         | Jeroen Ooms    | 06.05.2021         |
-|    `stringr` | Przetwarzanie ciągów znakowych, regex     | 806 997             | Hadley Wickham | 10.02.2019         |
+| Nazwa paczki | Opis                                      | Miesięczne pobrania | Autorzy          | Data opublikowania |
+|-------------:|-------------------------------------------|---------------------|------------------|--------------------|
+|       `xml2` | Pobieranie dokumentów HTML                | 620 159             | Hadley Wickham   | 30.11.2021         |
+|  `tidyverse` | Zestaw bibliotek wspomagających pracę w R | 689 554             | Hadley Wickham   | 15.04.2021         |
+|   `pdftools` | Scrapowanie tekstu z plików PDF           | brak danych         | Jeroen Ooms      | 06.05.2021         |
+|    `stringr` | Przetwarzanie ciągów znakowych, regex     | 806 997             | Hadley Wickham   | 10.02.2019         |
+|    `plumber` | Generowanie API ze skryptów R             | 11 776              | Barret Schloerke | 24.03.2021         |
 
 ## Polecana literatura oraz linki do wykorzystanych/przydatnych stron
 - Zdecydowanie nie dokumentacja API IMGW
+- <https://www.rplumber.io/>
 - <https://dplyr.tidyverse.org>
 - Stack Overflow
 - <https://regexr.com/>
